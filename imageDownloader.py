@@ -14,8 +14,6 @@ def downloadImgURL(url, i, naam, folderIndex):
     folderName="./images/"+str(folderIndex+1)+'.'+naam 
     folderPath=os.path.join(folderName, fullName) #path of folder
     urllib.request.urlretrieve(url, folderPath)
-   
-    #break
 
 def spider():
     loc = ("./dataIn.xlsx") 
@@ -37,18 +35,10 @@ def spider():
         row=sheet.row_values(x)
         url="https://www.google.co.in/search?q="+str(row)+"&source=lnms&tbm=isch"
         sourceCode=requests.get(url)
-        plainText=sourceCode.text
-        
-        
-        parent_dir = "./images"
-        # Path 
-        path = os.path.join(parent_dir, str(x+1)+'.'+str(row[0])) 
-          
-        # Create the directory 
-        # 'GeeksForGeeks' in 
-        # '/home / User / Documents' 
-        os.mkdir(path) 
-        #print(folder)
+        plainText=sourceCode.text       
+        parent_dir = "./images"        
+        path = os.path.join(parent_dir, str(x+1)+'.'+str(row[0]))         
+        os.mkdir(path)         
         soup=BeautifulSoup(plainText,"html.parser")
         
         for link in soup.findAll('img', {'alt': 'Image result for '+str(row)}):
@@ -57,10 +47,8 @@ def spider():
             sheet1.write(rn, cn, row[0]+' '+str(i)) 
             i=i+1 
             sheet1.write(ru, cu, src) 
-            rn+=1
-            #cn+=1
+            rn+=1            
             ru+=1
-            #cu+=1
             wb.save('URLs.xls')
 
 spider();    
